@@ -14,6 +14,7 @@
 !/package.json
 !/package-lock.json
 !/.python-version
+!/requirements.txt
 
 # 3) Python 采集/工具脚本
 !/douyin_sign.py
@@ -38,6 +39,6 @@
 #   - cookie_fresh2.txt / browser_ls_fresh.json 等凭据与指纹
 #   - webmssdk.js、recycle/ 下的 secsdk 厂商 SDK（指向线上地址自行抓取）
 #   - aweme_*.json / comments_*.json / bdms_vm*.json 等采集结果与逆向中间产物
-#   - iv8rs-lab/ 虚拟环境、node_modules/、__pycache__/ 等生成物
+#   - .venv/ 虚拟环境、node_modules/、__pycache__/ 等生成物
 #   - .snow/、.playwright-mcp/、github_search/、recycle/_external_ref_do_not_use/ 等
 # ------------------------------------------------------------

@@ -25,7 +25,7 @@ douyin_sign.py —— 抖音 web 签名模块（解耦、可复用）
     browser_ls_fresh.json   浏览器导出 localStorage（含 EC 私钥/证书）
     xhr_shim.js             iv8rs 侧 XHR 包装
     recycle/*.js            5 个安全 SDK 脚本
-    iv8_rs                  本机虚拟环境 iv8rs-lab 内
+    iv8_rs                  本机虚拟环境  内
 """
 import subprocess
 import json

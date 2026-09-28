@@ -1,0 +1,18 @@
+# ============================================================
+# 抖音 Web 纯协议采集 —— Python 依赖
+# 需要 Python 3.13（见 .python-version）
+#
+# 安装：
+#   python -m venv .venv
+#   .\.venv\Scripts\Activate.ps1
+#   pip install -r requirements.txt
+# ============================================================
+
+# --- 核心：签名链 + 取数 ---
+ming-iv8-rs>=0.8.12    # iv8rs：进程内执行 secsdk JS，补全 uifid / x-secsdk-web-signature
+requests>=2.32.0       # 发送最终签名 URL 取数
+curl-cffi>=0.7.0       # 纯协议刷新身份 cookie（伪造 Chrome 的 TLS/HTTP2 指纹）
+
+# --- 浏览器兜底：首次引导 / Node 环境不可用时 ---
+# 装完还需下载浏览器内核：playwright install chromium
+playwright>=1.40.0

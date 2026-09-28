@@ -1,4 +1,4 @@
-# 抖音 Web 纯协议采集（a_bogus 签名逆向）
+# 抖音 Web 纯协议采集（a_bogus 签名分析）
 
 > ## ⚠️ 免责声明
 >
@@ -16,7 +16,7 @@
 
 ---
 
-## 一、原理：难在哪
+## 一、a_bogus 签名链分析
 
 抓包可见 `/aweme/v1/web/aweme/post/`（主页视频）与 `/aweme/v1/web/comment/list/`（评论）的响应都是**明文 JSON**，没有加密。真正的门槛全在请求侧，URL 必须带上完整签名：
 
@@ -88,17 +88,20 @@ CDP 断点跟栈确认的调用链：
 
 ## 二、怎么用
 
-### 1. 环境准备
+### 1. 环境准备（Windows / PowerShell）
 
 ```powershell
-# Node + jsdom（用国内镜像加速）
-npm config set registry https://registry.npmmirror.com
-npm i jsdom --no-audit --no-fund
+# 1) Node 依赖（jsdom：真实 V8 签名所需）
+npm config set registry https://registry.npmmirror.com; npm i --no-audit --no-fund
 
-# Python 3.13 + iv8rs + requests
-uv venv iv8rs-lab
-.\iv8rs-lab\Scripts\pip install ming-iv8-rs requests
+# 2) 建虚拟环境并装 Python 依赖（无需激活，直接用 venv 的 pip）
+python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt
+
+# 3) 可选：需要浏览器兜底时，再下载 Chromium 内核
+playwright install chromium
 ```
+
+> 依赖清单见 `requirements.txt`。之后运行脚本统一用 `.\\.venv\\Scripts\\python.exe xxx.py`，无需激活虚拟环境。
 
 ### 2. 抓取 secsdk 厂商脚本（不在仓库内，需自行下载）
 
@@ -121,7 +124,7 @@ recycle/captcha_index.js         ← 验证中心 SDK
 - **日常刷新（推荐，纯协议，约 1~2 秒）**
 
   ```powershell
-  .\iv8rs-lab\Scripts\python.exe douyin_identity.py --verify
+  python douyin_identity.py --verify
   ```
 
   抖音只在「通过 acrawler 挑战的浏览器请求」上**首次**下发 `UIFID`/`ttwid`，所以**从零引导**需要一次浏览器；
@@ -132,7 +135,7 @@ recycle/captcha_index.js         ← 验证中心 SDK
 - **首次引导 / 种子彻底失效时（一次性，约 4 秒）**
 
   ```powershell
-  .\iv8rs-lab\Scripts\python.exe dump_fresh_env.py
+  python dump_fresh_env.py
   ```
 
   导出：
@@ -154,10 +157,10 @@ recycle/captcha_index.js         ← 验证中心 SDK
 
 ```powershell
 # 主页视频（纯协议，一条命令拿数据）
-.\iv8rs-lab\Scripts\python.exe douyin_node_fetch.py
+python douyin_node_fetch.py
 
 # 视频评论（可指定 aweme_id / 翻页数）
-.\iv8rs-lab\Scripts\python.exe douyin_comments.py <aweme_id> --max-pages 5
+python douyin_comments.py <aweme_id> --max-pages 5
 
 # 备用：Playwright 浏览器内签名 + requests（Node 环境不可用时兜底）
 python douyin_fetch.py
