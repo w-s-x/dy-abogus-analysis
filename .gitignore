@@ -1,0 +1,43 @@
+# ============================================================
+# 白名单式 .gitignore
+# 策略：默认忽略一切，仅显式放行需要开源的源码与文档。
+# 所有放行项均用前导 / 锚定到仓库根，避免误放行同名子文件。
+# 未在此列出的任何文件/目录都不会进入版本库。
+# ============================================================
+
+# 1) 默认忽略所有文件与目录
+*
+
+# 2) 仓库元信息
+!/.gitignore
+!/README.md
+!/package.json
+!/package-lock.json
+!/.python-version
+
+# 3) Python 采集/工具脚本
+!/douyin_sign.py
+!/douyin_comments.py
+!/douyin_fetch.py
+!/douyin_node_fetch.py
+!/douyin_identity.py
+!/dump_fresh_env.py
+
+# 4) Node 签名脚本与 iv8rs 侧 XHR 包装
+!/node_sign.js
+!/xhr_shim.js
+
+# 5) 教程与逆向方法论文档（docs/ 目录）
+# 注意：上一层 `*` 会连目录一起忽略，Git 遇到被忽略的目录不再进入其内部，
+# 因此必须先用 `!/docs/` 放行目录本身，`!/docs/*` 才会生效。
+!/docs/
+!/docs/*
+
+# ------------------------------------------------------------
+# 以下内容一律不上传（被上面的 `*` 全部覆盖，此处仅作警示）：
+#   - cookie_fresh2.txt / browser_ls_fresh.json 等凭据与指纹
+#   - webmssdk.js、recycle/ 下的 secsdk 厂商 SDK（指向线上地址自行抓取）
+#   - aweme_*.json / comments_*.json / bdms_vm*.json 等采集结果与逆向中间产物
+#   - iv8rs-lab/ 虚拟环境、node_modules/、__pycache__/ 等生成物
+#   - .snow/、.playwright-mcp/、github_search/、recycle/_external_ref_do_not_use/ 等
+# ------------------------------------------------------------
